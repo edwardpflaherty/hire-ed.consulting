@@ -1,9 +1,7 @@
 /* ============================================================
    hire-ed.consulting — stylesheet
-   Design concept: a trail map. A dotted rust trail line runs
-   the length of the page connecting waypoints; faint topographic
-   contour lines sit behind the hero. Vintage park-poster palette,
-   kept legible and professional.
+   Design concept: a trail map with custom Tunkhannock, PA 
+   topographic vector lines.
    ============================================================ */
 
 :root{
@@ -55,7 +53,7 @@ img{ max-width: 100%; display: block; }
   position: relative;
 }
 
-/* dotted trail line running the page */
+/* Dotted trail line running down the page */
 .container::before{
   content: "";
   position: absolute;
@@ -86,18 +84,6 @@ header .container::before{ display:none; }
   background: var(--parchment);
 }
 .dark .tab-label{ background: var(--charcoal); color: var(--rust); }
-
-/* waypoint dot marker, sits on the trail line */
-.waypoint-dot{
-  position: absolute;
-  left: max(24px, calc(50vw - 590px + var(--spine) - 28px));
-  top: 8px;
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  background: var(--rust);
-  transform: translate(-50%, 0);
-}
 
 /* ---------------- header / nav ---------------- */
 header{
@@ -166,21 +152,44 @@ section:last-of-type{ border-bottom: none; }
 }
 .section-head p{ color: var(--pine-soft); font-size: 18px; margin: 0; }
 
-/* ---------------- hero ---------------- */
+/* ---------------- hero & topographic contours ---------------- */
 .hero{
   padding-top: clamp(56px, 9vw, 108px);
   overflow: hidden;
 }
-.hero .contours{
+.hero .contours, 
+.contours {
   position: absolute;
   top: 0;
   right: 0;
-  width: min(60vw, 780px);
-  height: 420px;
-  opacity: 0.35;
+  width: min(65vw, 820px);
+  height: 100%;
+  opacity: 0.45;
   pointer-events: none;
   z-index: 0;
 }
+
+.contours .index-line {
+  stroke-dasharray: 5px 2px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .contours .path {
+    stroke-dasharray: 1400;
+    stroke-dashoffset: 1400;
+    animation: topoDraw 2.8s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  }
+  
+  .contours .path:nth-child(3n) { animation-delay: 0.15s; }
+  .contours .path:nth-child(3n+1) { animation-delay: 0.35s; }
+  .contours .path:nth-child(3n+2) { animation-delay: 0.55s; }
+}
+
+@keyframes topoDraw {
+  from { stroke-dashoffset: 1400; }
+  to { stroke-dashoffset: 0; }
+}
+
 .hero .container{ position: relative; z-index: 1; }
 .hero h1{
   font-family: var(--serif);
@@ -273,7 +282,7 @@ section:last-of-type{ border-bottom: none; }
   color: var(--teal);
 }
 
-/* ---------------- timeline (trail waypoints) ---------------- */
+/* ---------------- timeline ---------------- */
 .timeline{ position: relative; }
 .tl-item{
   display: grid;
@@ -297,7 +306,7 @@ section:last-of-type{ border-bottom: none; }
 .callout h4{ font-family: var(--serif); font-size: 18px; margin: 0 0 8px; }
 .callout p{ margin: 0; color: var(--pine-soft); }
 
-/* ---------------- speaking (condensed) ---------------- */
+/* ---------------- speaking ---------------- */
 .talk-list{ list-style: none; margin: 0; padding: 0; }
 .talk{ display: grid; grid-template-columns: 90px 1fr; gap: 24px; padding: 18px 0; border-top: 1px solid var(--rule); }
 .talk:last-child{ border-bottom: 1px solid var(--rule); }
@@ -363,5 +372,5 @@ footer .container::before{ border-color: var(--rust); }
   .giving-box{ grid-template-columns: 1fr; }
   .tl-year{ padding-top: 0; }
   .tab-label{ display: none; }
-  .hero .contours{ opacity: 0.2; width: 100vw; }
+  .hero .contours{ opacity: 0.25; width: 100vw; }
 }
